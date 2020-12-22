@@ -32,7 +32,6 @@ export const Contacts = () =>{
                     if(contacts.isLoading){
                         return <div>...Loading</div>
                     }
-
                     if(contacts.isError){
                         return <div>...ERROR</div>
                     }

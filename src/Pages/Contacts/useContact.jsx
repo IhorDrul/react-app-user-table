@@ -6,7 +6,7 @@ export const useContacts = () => {
     const [isError, setIsError] = useState(false)
 
     useEffect(() =>{
-        //setIsLoading(true)
+        setIsLoading(true)
         const getContacts = async () => {
             try {
                 setIsLoading(true)

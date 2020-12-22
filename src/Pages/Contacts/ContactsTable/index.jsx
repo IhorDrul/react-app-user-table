@@ -8,7 +8,12 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
+import format from 'date-fns/format'
+import parseISO from 'date-fns/parseISO'
 import React from "react";
+import Box from '@material-ui/core/Box';
+
+import {CopyToClipboardText} from "../../../Components/CopyText";
 
 const useStyles = makeStyles({
     table: {
@@ -38,11 +43,15 @@ export const ContactsTable = ({data}) => {
                         </TableCell>
                         <TableCell>{row.name.title}. {row.name.first} {row.name.last}</TableCell>
                         <TableCell>
-                            <Typography>{row.dob.date}</Typography>
+                            {/*<Typography>{format(parseISO(row.dob.data), "MM/dd/yyyy")}</Typography>*/}
                             <Typography>{row.dob.age} years</Typography>
                         </TableCell>
-                        <TableCell>{row.email}</TableCell>
-                        <TableCell>{row.phone}</TableCell>
+                        <TableCell>
+                            <CopyToClipboardText text={row.email}/>
+                        </TableCell>
+                        <TableCell>
+                            <CopyToClipboardText text = {row.phone}/>
+                        </TableCell>
                         <TableCell>{row.location.country}</TableCell>
                         <TableCell align="right">{row.nat}</TableCell>
                     </TableRow>
