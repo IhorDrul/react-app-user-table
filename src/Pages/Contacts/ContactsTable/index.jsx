@@ -12,6 +12,7 @@ import format from 'date-fns/format'
 import parseISO from 'date-fns/parseISO'
 import React from "react";
 import Box from '@material-ui/core/Box';
+import {NATIONALITIES_HUMAN_NAME} from '../../../Constants/nationality'
 
 import {CopyToClipboardText} from "../../../Components/CopyText";
 
@@ -41,7 +42,7 @@ export const ContactsTable = ({data}) => {
                         <TableCell component="th" scope="row">
                             <Avatar alt={`${row.name.first}${row.name.last}`} src={row.picture.thumbnail} />
                         </TableCell>
-                        <TableCell>{row.name.title}. {row.name.first} {row.name.last}</TableCell>
+                        <TableCell>{row.name.title}{row.name.title.length > 3 ? null : '.'} {row.name.first} {row.name.last}</TableCell>
                         <TableCell>
                             {/*<Typography>{format(parseISO(row.dob.data), "MM/dd/yyyy")}</Typography>*/}
                             <Typography>{row.dob.age} years</Typography>
@@ -52,8 +53,12 @@ export const ContactsTable = ({data}) => {
                         <TableCell>
                             <CopyToClipboardText text = {row.phone}/>
                         </TableCell>
-                        <TableCell>{row.location.country}</TableCell>
-                        <TableCell align="right">{row.nat}</TableCell>
+                        <TableCell>
+                            <Typography>{row.location.country}</Typography>
+                            <Typography>{row.location.city}</Typography>
+                            <Typography>{row.location.street.name}</Typography>
+                        </TableCell>
+                        <TableCell align="right">{NATIONALITIES_HUMAN_NAME[row.nat]}</TableCell>
                     </TableRow>
                 ))}
             </TableBody>

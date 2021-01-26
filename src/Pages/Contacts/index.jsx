@@ -2,9 +2,13 @@ import React, {useState, useEffect} from 'react'
 import Grid from '@material-ui/core/Grid';
 import {useContacts} from './useContact'
 import Container from '@material-ui/core/Container';
-import { makeStyles, createStyles } from '@material-ui/core/styles';
+import {makeStyles, createStyles} from '@material-ui/core/styles';
 import Typography from "@material-ui/core/Typography";
-import { ContactsTable } from "./ContactsTable";
+import CircularProgress from '@material-ui/core/CircularProgress';
+import {ContactsTable} from "./ContactsTable";
+import Box from '@material-ui/core/Box'
+import {ToggleViewMode} from "./ToggleViewMode/index";
+import {DATA_VIEW_MODE} from "./constats";
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -17,25 +21,40 @@ const useStyles = makeStyles((theme) =>
     })
 )
 
-export const Contacts = () =>{
+export const Contacts = () => {
     const contacts = useContacts()
     const classes = useStyles()
-    return <Container className = {classes.root}>
+    const [dataViewMode, setDataViewMode] = useState(localStorage.getItem('dataViewMode') || DATA_VIEW_MODE.TABLE)
+
+    useEffect(() => {
+        localStorage.setItem('dataViewMode', dataViewMode)
+    }, [dataViewMode])
+
+    return <Container className={classes.root}>
         <Grid container spacing={3}>
-            <Grid item xs={12} className = {classes.headContainer}>
-                <Typography variant="h3" component="h1">
-                    Contacts
-                </Typography>
+            <Grid item xs={12} className={classes.headContainer}>
+                <Box display='flex' justifyContent='space-between'>
+                    <Typography variant="h3" component="h1">
+                        Contacts
+                    </Typography>
+                    <ToggleViewMode dataViewMode={dataViewMode} setDataViewMode={setDataViewMode}/>
+                </Box>
             </Grid>
             <Grid item xs={12}>
                 {(() => {
-                    if(contacts.isLoading){
-                        return <div>...Loading</div>
+                    if (contacts.isLoading) {
+                        return <CircularProgress/>
                     }
-                    if(contacts.isError){
+                    if (contacts.isError) {
                         return <div>...ERROR</div>
                     }
-                    return <ContactsTable data = {contacts.data} />
+                    if (dataViewMode === DATA_VIEW_MODE.TABLE) {
+                        return <ContactsTable data={contacts.data}/>
+                    }
+                    if (dataViewMode === DATA_VIEW_MODE.GRID) {
+                        return <div>Grid</div>
+                    }
+                    return null
                 })()}
 
             </Grid>
